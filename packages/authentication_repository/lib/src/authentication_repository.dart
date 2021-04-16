@@ -1,10 +1,9 @@
 import 'dart:async';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:meta/meta.dart';
-
-import 'models/models.dart';
 
 /// Thrown if during the sign up process if a failure occurs.
 class SignUpFailure implements Exception {}
@@ -38,7 +37,7 @@ class AuthenticationRepository {
   /// Emits [User.empty] if the user is not authenticated.
   Stream<User> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      return firebaseUser == null ? User.empty : firebaseUser.toUser;
+      return firebaseUser == null ? User.anonymous : firebaseUser.toUser;
     });
   }
 
@@ -111,10 +110,6 @@ class AuthenticationRepository {
 
 extension on firebase_auth.User {
   User get toUser {
-    return User(
-        id: uid,
-        email: email ?? '',
-        name: displayName ?? '',
-        photo: photoURL ?? '');
+    return User(id: uid, email: email, name: displayName, photo: photoURL);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-// import 'package:meta/meta.dart';
 
 /// {@template user}
 /// User model
@@ -9,27 +8,33 @@ import 'package:equatable/equatable.dart';
 class User extends Equatable {
   /// {@macro user}
   const User({
-    required this.email,
     required this.id,
-    required this.name,
-    required this.photo,
+    this.email,
+    this.name,
+    this.photo,
   });
 
   /// The current user's email address.
-  final String email;
+  final String? email;
 
   /// The current user's id.
   final String id;
 
   /// The current user's name (display name).
-  final String name;
+  final String? name;
 
   /// Url for the current user's photo.
-  final String photo;
+  final String? photo;
 
-  /// Empty user which represents an unauthenticated user.
-  static const empty = User(email: '', id: '', name: '', photo: '');
+  /// Anonymous user which represents an unauthenticated user.
+  static const anonymous = User(id: '');
+
+  /// Convenience getter to determine whether the current user is anonymous.
+  bool get isAnonymous => this == User.anonymous;
+
+  /// Convenience getter to determine whether the current user is not anonymous.
+  bool get isNotAnonymous => this != User.anonymous;
 
   @override
-  List<Object> get props => [email, id, name, photo];
+  List<Object?> get props => [email, id, name, photo];
 }
